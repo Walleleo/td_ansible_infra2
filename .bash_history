@@ -1,0 +1,3 @@
+sudo ls
+ls
+exit
