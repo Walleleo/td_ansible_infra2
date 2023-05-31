@@ -1,28 +1,21 @@
-- name: Config CSR1000
- hosts: csr1000
- gathers_facts: false
+- name: Configuration du serveur DHCP sur le routeur Cisco
+  hosts: csr1000
+  gather_facts: false
 
- tasks:
-  - name Configurer GigabitEtherenet2
-    cisco.ios.ios_command:
-       commands:
-        - conf t
-        - int g2
-        - ip addr 192.168.2.1 255.255.255.0
-        - no sh
 
-  - name Configurer GigabitEtherenet2
-    cisco.ios.ios_command:
-       commands:
-        - conf t
-        - int g3
-        - ip addr 192.168.3.1 255.255.255.0
-        - no sh
+  tasks:
+    - name: Configuration du serveur DHCP
+      cisco.ios.ios_config:
+        lines:
+          - ip dhcp pool POOL2
+          - network 192.168.2.0 255.255.255.0
+          - default-router 192.168.2.1
+          - dns-server 8.8.8.8
+          - lease 7
+        parents: interface Gigabit2
+      register: dhcp_config
 
-  - name Configurer GigabitEtherenet4
-    cisco.ios.ios_command:
-       commands:
-        - conf t
-        - int g4
-        - ip addr 192.168.4.1 255.255.255.0
-        - no sh
+    - name: Vérification de la configuration
+      debug:
+        var:
+          dhcp_config
