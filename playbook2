@@ -1,0 +1,28 @@
+- name: Config CSR1000
+ hosts: csr1000
+ gathers_facts: false
+
+ tasks:
+  - name Configurer GigabitEtherenet2
+    cisco.ios.ios_command:
+       commands:
+        - conf t
+        - int g2
+        - ip addr 192.168.2.1 255.255.255.0
+        - no sh
+
+  - name Configurer GigabitEtherenet2
+    cisco.ios.ios_command:
+       commands:
+        - conf t
+        - int g3
+        - ip addr 192.168.3.1 255.255.255.0
+        - no sh
+
+  - name Configurer GigabitEtherenet4
+    cisco.ios.ios_command:
+       commands:
+        - conf t
+        - int g4
+        - ip addr 192.168.4.1 255.255.255.0
+        - no sh
