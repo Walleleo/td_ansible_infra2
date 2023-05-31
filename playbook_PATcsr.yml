@@ -1,26 +1,27 @@
 - name: Config PAT
- hots: casr1000
- gather_facts: false
+  hosts: csr1000
+  gather_facts: false
 
- tasks:
+  tasks:
   - name: Configurer le NAT
     cisco.ios.ios_config:
        lines:
-         - acces-list2 permit 192.168.{{item}}.0 0.0.0.255
-       loop:
-           - 2
-           - 3
-           - 4
+         - access-list 2 permit 192.168.{{ item }}.0 0.0.0.255
+    loop:
+         - 2
+         - 3
+         - 4
   - name: pool NAT
     cisco.ios.ios_config:
        lines:
-         -ip nat pool 192.168.103.221 prefix 23
+         - ip nat pool 192.168.103.221 prefix 23
 
   - name: Configurer le NAT
     cisco.ios.ios_config:
-       lines: ip naat outside
+       lines: ip nat outside
        parents: int g1
   
   - name: poolNAT
     cisco.ios.ios_config:
-       lines:ip nat inside
+       lines: ip nat inside
+       parents: int  g3
